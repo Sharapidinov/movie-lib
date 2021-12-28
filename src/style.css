@@ -1,0 +1,53 @@
+
+header{
+    background: #032541;
+}
+
+
+
+.btn-container{
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+
+}
+.search-input{
+    text-align: center;
+}
+.border-card{
+    height: 60px;
+    width: 60px;
+    background: white;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+    font-size: x-large;
+    color: black;
+}
+.actor-img{
+    width: 200px;
+    height: 300px;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 15px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
