@@ -15,10 +15,10 @@ const ActorInfo = () => {
 
         axios(`https://api.themoviedb.org/3/person/${params.id}/movie_credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => setFilms(data.cast))
-    }, [])
+    }, [params.id])
 
     return (
-        <div key={actor.id} className="container">
+        <div key={actor.id} className="container pad ">
             <div className="row">
                 <div className="col-3">
                     <div className="card w-100">

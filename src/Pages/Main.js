@@ -9,7 +9,7 @@ const Main = () => {
     const nav = useNavigate()
     const [name, setName] = useState("")
     const [films,setFilms] = useState([])
-    const [actorsNum, setActorsNum] = useState(10)
+
 
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Main = () => {
         nav(`/search/${name}`)
     }
     return (
-        <div className="container">
+        <div className="container pt-5">
             <div className="h-75 bg-primary p-5 mb-5">
                 <div className="text text-light fw-bold fs-2">Добро пожаловать</div>
                 <div className="text text-light fw-bold fs-2 mb-5">Миллионы фильмов, сериалов и людей. Исследуйте сейчас.

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import AllFilms from "./Pages/AllFilms";
 import {Route, Routes, Navigate} from "react-router-dom"
 import SearchMovie from "./components/Header/SearchMovie";
-import MovieCard from "./components/MovieCard/MovieCard";
 import MovieInfo from "./components/MovieInfo/MovieInfo";
 import Header from "./components/Header/Header";
 import ActorInfo from "./components/ActorInfo/ActorInfo";
@@ -25,7 +24,7 @@ const App = () => {
 
     return (
         <div onWheel={scroll}>
-        <Header/>
+        <div className={header}><Header/></div>
          <Routes>
              <Route path="/" element={<Main/>}/>
              <Route path="/films" element={<AllFilms/>}/>

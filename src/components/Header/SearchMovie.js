@@ -15,16 +15,14 @@ const SearchMovie = () => {
     useEffect(() => {
         axios(`https://api.themoviedb.org/3/search/movie?api_key=073e2098c1a48c1fee6edef88aedd5b7&query=${name}`)
             .then(({data}) => setSearch(data.results))
-    },[])
+    },[name])
 
-    const exit = () => {
-        nav(`/`)
-    }
+
 
     return (
-        <div className="container">
+        <div className="container pt-5">
 
-            <button className="btn btn-outline-secondary" onClick={exit}> На главную </button>
+            <button className="btn btn-outline-secondary" onClick={() => nav(`/`)}> На главную </button>
 
             <div className="row pt-5">
 

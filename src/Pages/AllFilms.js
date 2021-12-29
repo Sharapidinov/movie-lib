@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import MovieCard from "../components/MovieCard/MovieCard";
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 function AllFilms() {
   const [movie, setMovie] = useState([])
@@ -35,7 +35,7 @@ function AllFilms() {
     }
 
   return (
-    <div className="container pt-5">
+    <div className="container pt-5 ">
 
         <div className="d-flex justify-content-around align-items-center">
             <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>

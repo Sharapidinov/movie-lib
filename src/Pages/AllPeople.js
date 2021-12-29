@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import MovieCard from "../components/MovieCard/MovieCard";
 import PeopleCard from "../components/PeopleCard/PeopleCard";
 
 const AllPeople = () => {

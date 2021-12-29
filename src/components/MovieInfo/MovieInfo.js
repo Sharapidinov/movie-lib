@@ -26,7 +26,7 @@ const MovieInfo = () => {
 
 
     return (
-        <div key={info.id}>
+        <div key={info.id} className="pt-5">
 
 
             <section style={{
