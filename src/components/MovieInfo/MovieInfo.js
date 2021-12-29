@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams, Link} from "react-router-dom";
+import { useParams, Link} from "react-router-dom";
 import axios from "axios";
 import anon from "../img/anon.jpeg"
 const MovieInfo = () => {
@@ -11,7 +11,7 @@ const MovieInfo = () => {
 
     const params = useParams()
 
-    const nav = useNavigate()
+    // const nav = useNavigate()
 
     useEffect(() => {
         axios(`https://api.themoviedb.org/3/movie/${params.id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
@@ -22,7 +22,7 @@ const MovieInfo = () => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => it.job === `Director` || it.job === `Screenplay`))
             })
-    }, [])
+    }, [params])
 
 
     return (

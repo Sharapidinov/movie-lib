@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import AllFilms from "./Pages/AllFilms";
 import {Route, Routes, Navigate} from "react-router-dom"
 import SearchMovie from "./components/Header/SearchMovie";
