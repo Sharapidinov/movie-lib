@@ -20,17 +20,17 @@ const SearchMovie = () => {
 
 
     return (
-        <div className="container pt-5">
+        <div className="container pad">
 
-            <button className="btn btn-outline-secondary" onClick={() => nav(`/`)}> На главную </button>
+            <button className="btn mt-3 btn-outline-secondary" onClick={() => nav(`/`)}> На главную </button>
 
             <div className="row pt-5">
 
                 {
-
+                    (search.length !== 0)?
                     search?.map( it => {
                         return <MovieCard key={it.id} it={it}/>
-                    })
+                    }): "Ненайдено"
 
                 }
 

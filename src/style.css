@@ -7,14 +7,15 @@
     z-index: 10;
 }
 .pad{
-    padding-top: 70px;
+    padding-top: 80px;
 }
 
 .header-show{
-    animation: header 1s reverse backwards;
+    animation: header 0.7s reverse linear;
+    background: #032541;
 }
 .header-hidden{
-    animation: header 1s forwards;
+    animation: header 0.7s backwards;
 }
 @keyframes header {
     from{
@@ -72,3 +73,34 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+.triller-bg{
+    background: rgba(0,0,0,  0.8);
+}
+
+.footer{
+    background: #032541;
+}
+.wraper{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.rating{
+    width:80px;
+}
+.slick-arrow::before{
+    color: black;
+}
+.button-slider{
+    background: none;
+    border: none;
+    cursor: grab !important;
+}
+.button-slider:active{
+    cursor: grabbing !important;
+}
+.button-slider:focus{
+    outline: none;
+}
+

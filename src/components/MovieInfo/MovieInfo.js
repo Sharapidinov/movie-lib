@@ -1,17 +1,67 @@
 import React, {useEffect, useState} from 'react';
-import { useParams, Link} from "react-router-dom";
+import {useParams, Link, useNavigate} from "react-router-dom";
+import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import axios from "axios";
 import anon from "../img/anon.jpeg"
+import Slider from "react-slick"
+import 'react-circular-progressbar/dist/styles.css';
+import Triller from "./Triller";
+
+
 const MovieInfo = () => {
 
     const [info, setInfo] = useState({})
     const [actors, setActors] = useState([])
     const [crew, setCrew] = useState([])
+    const [videos, setVideos] = useState([])
+    const [videosKey, setVideosKey] = useState("")
     const [actorsNum, setActorsNum] = useState(10)
+    const [toggle, setToggle] = useState(false)
+    const [coords, setCoords] = useState(0)
 
     const params = useParams()
 
-    // const nav = useNavigate()
+    const nav = useNavigate()
+
+    const settings = {
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 3,
+        responsive: [
+            {
+                breakpoint: 1300,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 2,
+
+                }
+            },
+            {
+                breakpoint: 1080,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 2,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 840,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1
+                }
+            },
+            {
+                breakpoint: 590,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
 
     useEffect(() => {
         axios(`https://api.themoviedb.org/3/movie/${params.id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
@@ -22,11 +72,26 @@ const MovieInfo = () => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => it.job === `Director` || it.job === `Screenplay`))
             })
+
+        axios(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+            .then(({data}) => setVideos(data.results))
     }, [params])
 
 
+    const par = (key) => {
+        console.log(key)
+        setVideosKey(key)
+        setToggle(true)
+    }
+
+    const goToInfo = (id, e) =>{
+        if(Math.abs(e.clientX - coords) < 5)
+        nav(`/actor/${id}`)
+
+    }
+
     return (
-        <div key={info.id} className="pt-5">
+        <div key={info.id} className="pad">
 
 
             <section style={{
@@ -42,7 +107,6 @@ const MovieInfo = () => {
                             <h1 className="card-title text-light">{info.title}</h1>
                             <div>( {info.release_date} )</div>
                             <div className="d-flex mb-3 text-light ">
-
                                 &bull;
                                 &ensp;
                                 {info.genres?.map(it => <div className="text-light me-3">  {it.name}</div>)}
@@ -50,7 +114,23 @@ const MovieInfo = () => {
                             </div>
                             <div className="text-light mb-3"> Длительность {info.runtime} минут</div>
                             <div className="d-flex align-items-center mb-5">
-                                <div className="border-card me-3 ">{info.vote_average * 10}%</div>
+                                <div className="rating me-2">
+                                    <CircularProgressbar
+                                        value={info.vote_average * 10}
+                                        text={`${info.vote_average * 10}%`}
+                                        styles={buildStyles({
+                                            textSize: '22px',
+                                            pathTransitionDuration: 2.5,
+                                            textColor: '#FFFFFF',
+                                            trailColor: '#FFFFFF',
+                                            backgroundColor: '#FFFFFF',
+                                            background: {
+                                                fill: '#FFFFFF',
+                                            },
+                                            pathColor: "#0fb6de"
+                                        })}
+                                    />
+                                </div>
                                 <div>Пользовательский счёт</div>
                             </div>
 
@@ -59,12 +139,11 @@ const MovieInfo = () => {
                             <div className="text d-flex">
                                 {
                                     crew.map(it => {
-                                        return(
+                                        return (
                                             <div className="m-3">
                                                 <h4>{it.name}</h4>
                                                 <p>{it.job}</p>
                                             </div>
-
                                         )
                                     })
                                 }
@@ -73,29 +152,45 @@ const MovieInfo = () => {
                     </div>
                 </div>
             </section>
-            <div className="card p-5">
-                <div className="d-flex overflow-auto">
+            <div className="card h-100 p-5">
+
+                <Slider {...settings}>
                     {
                         actors?.slice(0, actorsNum)?.map(it => {
                             return (
-                                <div key={it.id} className="h-25">
+                                <div key={it.id} className="h-100">
                                     <div className="card h-100 p-3 m-2 d-flex flex-column justify-content-between  ">
-                                        <Link className="text-decoration-none text-black" to={`/actor/${it.id}`}>
-                                            <img className="actor-img" src={it.profile_path? `https://image.tmdb.org/t/p/w300${it.profile_path}` : anon}
+                                        <button onMouseDown={(e) => setCoords(e.clientX)} onClick={(e) => goToInfo(it.id, e)} className="text-decoration-none button-slider text-black" >
+                                            <img className="actor-img"
+                                                 src={it.profile_path ? `https://image.tmdb.org/t/p/w300${it.profile_path}` : anon}
                                                  alt={it.name}/>
                                             <h5> {it.name} </h5>
-                                        </Link>
+                                        </button>
                                     </div>
                                 </div>
                             )
                         })
                     }
                     {actorsNum < actors.length && <div className="d-flex align-items-center text-center">
-                        <button className="btn" onClick={()=> setActorsNum(actorsNum + 10)}>Смотреть еще...</button>
+                        <button className="btn" onClick={() => setActorsNum(actorsNum + 10)}>Смотреть еще...</button>
                     </div>}
-                </div>
+                </Slider>
+
             </div>
 
+
+            <ul>
+                {
+                    videos.map(it => {
+                        return (
+                            <li><button onClick={() => par(it.key)}>{it.name}</button></li>
+                        )
+                    })
+                }
+            </ul>
+
+
+            {toggle && <Triller setToggle={setToggle}  videoKey={videosKey} />}
         </div>
 
     );

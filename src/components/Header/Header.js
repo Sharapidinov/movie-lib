@@ -4,18 +4,27 @@ import logo from "../img/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6b
 import {useState} from "react";
 const Header = () => {
     const [name, setName] = useState("")
+    const [dis, setDis] = useState(true)
+
     const nav = useNavigate()
 
     const Search = e => {
-        setName(e.target.value.trim())
+        if (e.target.value.trim() !== ``){
+            setName(e.target.value.trim())
+            setDis(false)
+        }
 
 
     }
 
     const enter = (e) => {
-        if (e.key === "Enter") {
-            nav(`/search/${name}`)
+        if (e.target.value.trim() !== ``){
+            setName(e.target.value.trim())
+            if (e.key === "Enter") {
+                nav(`/search/${name}`)
+            }
         }
+
     }
 
     const onClick = () => {
@@ -30,9 +39,9 @@ const Header = () => {
                     <Link className="text-decoration-none text-light fs-5 me-3" to="/films">Фильмы</Link>
                     <Link className="text-decoration-none text-light fs-5 me-3 " to="/people">Актеры</Link>
                 </div>
-                <div className="d-flex justify-content-around align-items-center">
+                <div className="d-flex justify-content-around align-items-center d-none d-md-flex">
                     <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
-                    <button onClick={onClick} className="btn btn-outline-secondary ">Найти</button>
+                    <button onClick={onClick} disabled={dis} className="btn btn-outline-secondary ">Найти</button>
                 </div>
 
             </div>

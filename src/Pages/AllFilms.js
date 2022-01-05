@@ -19,15 +19,21 @@ function AllFilms() {
 
 
     const Search = e => {
+        if (e.target.value.trim() !== ``){
             setName(e.target.value.trim())
+        }
 
 
     }
 
     const enter = (e) => {
-        if (e.key === "Enter") {
-            nav(`/search/${name}`)
+        if (e.target.value.trim() !== ``){
+            setName(e.target.value.trim())
+            if (e.key === "Enter") {
+                nav(`/search/${name}`)
+            }
         }
+
     }
 
     const onClick = () => {
@@ -35,7 +41,7 @@ function AllFilms() {
     }
 
   return (
-    <div className="container pt-5 ">
+    <div className="container container-sm container-md container-lg container-xl pad">
 
         <div className="d-flex justify-content-around align-items-center">
             <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
@@ -52,7 +58,7 @@ function AllFilms() {
          {page < 100 && <button onClick={() => setPage(100)}  className='btn btn-primary'>{100}</button>}
      </div>
 
-    <div className="row pt-5">
+    <div className="row m-auto align-items-center justify-content-center pt-5">
       {
         movie.map(it => {
           return(
@@ -63,15 +69,7 @@ function AllFilms() {
         })
       }
     </div>
-        <div className="btn-container">
-            {
-                [...Array(10).keys()].map(it => {
-                    return(
-                        <button onClick={() => setPage(it+1)}  className='btn btn-primary'>{it + 1}</button>
-                    )
-                })
-            }
-        </div>
+
     </div>
   )
 }

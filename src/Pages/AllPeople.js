@@ -36,7 +36,7 @@ const AllPeople = () => {
     }
 
     return (
-        <div className="container pt-5">
+        <div className="container pad">
 
             <div className="d-flex justify-content-around align-items-center">
                 <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
@@ -68,7 +68,7 @@ const AllPeople = () => {
                 {
                     [...Array(10).keys()].map(it => {
                         return(
-                            <button onClick={() => setPage(it+1)}  className='btn btn-primary'>{it + 1}</button>
+                            <button  onClick={() => setPage(it+1)}  className='btn btn-primary'>{it + 1}</button>
                         )
                     })
                 }
