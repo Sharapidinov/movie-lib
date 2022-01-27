@@ -1,14 +1,12 @@
 
-.header{
+header{
     background: #032541;
-    position: fixed;
+    position: sticky;
     left: 0;
     right: 0;
-    z-index: 10;
+
 }
-.pad{
-    padding-top: 80px;
-}
+
 
 .header-show{
     animation: header 0.7s reverse linear;
@@ -30,8 +28,10 @@
 .btn-container{
     padding: 20px;
     display: flex;
-    justify-content: space-around;
 
+}
+.btn-container button{
+    margin-right: 5px;
 }
 .search-input{
     text-align: center;
@@ -51,6 +51,7 @@
 .actor-img{
     width: 200px;
     height: 300px;
+    object-fit: cover;
 }
 /* width */
 ::-webkit-scrollbar {
@@ -75,6 +76,7 @@
 }
 .triller-bg{
     background: rgba(0,0,0,  0.8);
+    z-index: 5;
 }
 
 .footer{
@@ -104,3 +106,60 @@
     outline: none;
 }
 
+.links{
+    width: 50px;
+}
+
+.text-on-image{
+    opacity: 0;
+    transition: .2s;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.poster:hover{
+    border-radius: 15px;
+    filter: blur(3px) brightness(30%);
+}
+
+.poster:hover + .text-on-image{
+    opacity: 1;
+}
+.biography{
+    max-height: 300px;
+    overflow: hidden;
+}
+.gradient{
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: linear-gradient(to bottom, transparent 0%, transparent 80%, white);
+}
+.text-btn{
+    border: none;
+    background: none;
+    color: darkcyan;
+}
+.burger-menu-img{
+    width: 50px;
+}
+.btn-burger{
+    background: none;
+}
+.burger-menu{
+    height: 50vh;
+    width: 25vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

@@ -10,6 +10,7 @@ const Main = () => {
     const nav = useNavigate()
     const [name, setName] = useState("")
     const [films,setFilms] = useState([])
+    const [serials,setSerials] = useState([])
     const [dis, setDis] = useState(true)
     const [coords, setCoords] = useState(0)
 
@@ -56,6 +57,8 @@ const Main = () => {
     useEffect(() => {
         axios(`https://api.themoviedb.org/3/movie/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => setFilms(data.results))
+        axios(`https://api.themoviedb.org/3/tv/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+            .then(({data}) => setSerials(data.results))
     },[])
 
 
@@ -84,12 +87,15 @@ const Main = () => {
     const goToInfo = (id, e) =>{
         if(Math.abs(e.clientX - coords) < 5)
             nav(`/info/${id}`)
-
+    }
+    const goToSerial =  (id, e) =>{
+        if(Math.abs(e.clientX - coords) < 5)
+            nav(`/serial/${id}`)
     }
 
     return (
         <div className="container pad pb-4">
-            <div className="h-75 bg-primary p-5 mb-5">
+            <div className="mt-3 h-75 bg-primary p-5 mb-5">
                 <div className="text text-light fw-bold fs-2">Добро пожаловать</div>
                 <div className="text text-light fw-bold fs-2 mb-5">Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
                 </div>
@@ -120,6 +126,29 @@ const Main = () => {
 
                     }
                 </Slider>
+
+
+            <p className=" text fw-bold fs-2 mb-3">Популярные сериалы:</p>
+
+            <Slider {...settings}>
+                {
+                    serials?.map(it => {
+                        return (
+                            <div key={it.id} className="h-100">
+                                <div className="card h-100 p-3 m-2 d-flex flex-column justify-content-between  ">
+                                    <button onMouseDown={(e) => setCoords(e.clientX)} onClick={(e) => goToSerial(it.id, e)} className="text-decoration-none button-slider text-black">
+                                        <img className="actor-img" src={it.poster_path? `https://image.tmdb.org/t/p/w300${it.poster_path}` : anon}
+                                             alt={it.name}/>
+                                        <h5> {it.name} </h5>
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    })
+
+
+                }
+            </Slider>
 
         </div>
     );

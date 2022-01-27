@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import logo from "../img/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg"
 import {useState} from "react";
+import burger from "../img/burger-menu.svg"
+import {LanguageContext} from "../../languageCotext/LanguageContext";
+
 const Header = () => {
     const [name, setName] = useState("")
     const [dis, setDis] = useState(true)
-
+    const [burgerMenu, setBurgerMenu] = useState(false)
     const nav = useNavigate()
 
+    const {language, setLanguage} = useContext(LanguageContext)
+
     const Search = e => {
-        if (e.target.value.trim() !== ``){
+        if (e.target.value.trim() !== ``) {
             setName(e.target.value.trim())
             setDis(false)
         }
@@ -18,7 +23,7 @@ const Header = () => {
     }
 
     const enter = (e) => {
-        if (e.target.value.trim() !== ``){
+        if (e.target.value.trim() !== ``) {
             setName(e.target.value.trim())
             if (e.key === "Enter") {
                 nav(`/search/${name}`)
@@ -31,19 +36,30 @@ const Header = () => {
         nav(`/search/${name}`)
     }
 
+    const changeLanguage = () => {
+      setLanguage(language === `ru-RU` ? `EN`: `ru-RU`)
+    }
+
     return (
         <header>
             <div className="container d-flex align-items-center text-center justify-content-between p-3 ">
                 <div className="d-flex justify-content-around align-items-center">
-                    <Link to="/"><img className="w-75" src={logo} alt=""/></Link>
-                    <Link className="text-decoration-none text-light fs-5 me-3" to="/films">Фильмы</Link>
-                    <Link className="text-decoration-none text-light fs-5 me-3 " to="/people">Актеры</Link>
+                    <div><Link to="/"><img className="w-75" src={logo} alt=""/></Link></div>
+                        <Link className="text-decoration-none text-light fs-5 me-3" to="/films?page=1">Фильмы</Link>
+                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/people?page=1">Актеры</Link>
+                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/serials?page=1">Сериалы</Link>
+
+
                 </div>
                 <div className="d-flex justify-content-around align-items-center d-none d-md-flex">
-                    <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
-                    <button onClick={onClick} disabled={dis} className="btn btn-outline-secondary ">Найти</button>
+                    <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter}
+                           onChange={Search} type="text"/>
+                    <button onClick={onClick} disabled={dis} className="btn btn-outline-secondary me-3">Найти</button>
+                    <button className="btn btn-outline-secondary " onClick={changeLanguage}>{language.slice(-2)}</button>
                 </div>
 
+                {/*<button onClick={() => setBurgerMenu(true)} className="btn-burger border-0"><img*/}
+                {/*    className="burger-menu-img" src={burger} alt=""/></button>*/}
             </div>
         </header>
 

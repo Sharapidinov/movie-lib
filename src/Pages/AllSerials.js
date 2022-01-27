@@ -1,26 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React from 'react';
 import axios from "axios";
-import MovieCard from "../components/MovieCard/MovieCard";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useState, useEffect} from "react";
 import Spinner from "../components/Spinner/Spinner";
 import Pagination from "../components/pagination/Pagination";
+import MovieCard from "../components/MovieCard/MovieCard";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import SerialCard from "../components/SerialCard/SerialCard";
 
-function AllFilms() {
+const AllSerials = () => {
+    const [spinner, setSpinner] = useState(true)
+    const [serials, setSerials] = useState([])
     const [query, setQuery] = useSearchParams()
-    const [movie, setMovie] = useState([])
     const [page, setPage] = useState(+query.get("page"))
     const [name, setName] = useState("")
-    const [spinner, setSpinner] = useState(true)
     const nav = useNavigate()
 
-
     useEffect(() => {
-        axios(`https://api.themoviedb.org/3/discover/movie?api_key=073e2098c1a48c1fee6edef88aedd5b7&page=${page}&language=ru`)
+        axios(`https://api.themoviedb.org/3/discover/tv?api_key=073e2098c1a48c1fee6edef88aedd5b7&page=${page}&language=ru`)
             .then(({data}) => {
-                setMovie(data.results)
+                setSerials(data.results)
                 setSpinner(false)
             })
     }, [page])
+
+
 
 
     const Search = e => {
@@ -56,14 +59,14 @@ function AllFilms() {
                 <button onClick={onClick} className="btn btn-outline-secondary ">Найти</button>
             </div>
 
-           <Pagination page={page} setQuery={setQuery} setPage={setPage}/>
+            <Pagination page={page} setQuery={setQuery} setPage={setPage}/>
 
             <div className="row m-auto align-items-center justify-content-center pt-5">
                 {
-                    movie.map(it => {
+                    serials.map(it => {
                         return (
 
-                            <MovieCard key={it.id} it={it}/>
+                            <SerialCard key={it.id} it={it}/>
 
                         )
                     })
@@ -72,6 +75,7 @@ function AllFilms() {
             <Pagination page={page} setPage={setPage}/>
         </div>
     )
-}
 
-export default AllFilms;
+};
+
+export default AllSerials;

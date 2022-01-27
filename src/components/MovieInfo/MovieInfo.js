@@ -1,11 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {useParams,  useNavigate} from "react-router-dom";
+import React, {useEffect, useState,useContext} from 'react';
+import {useParams, useNavigate} from "react-router-dom";
 import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import axios from "axios";
 import anon from "../img/anon.jpeg"
 import Slider from "react-slick"
 import 'react-circular-progressbar/dist/styles.css';
 import Triller from "./Triller";
+import Spinner from "../Spinner/Spinner";
+import MovieHero from "../../Pages/MovieHero";
+import ActorsSlider from "../../Pages/ActorsSlider";
+import insta from "../img/insta.png";
+import face from "../img/face.png";
+import tweeter from "../img/tweeter.png";
+import {LanguageContext} from "../../languageCotext/LanguageContext";
 
 
 const MovieInfo = () => {
@@ -18,179 +25,132 @@ const MovieInfo = () => {
     const [actorsNum, setActorsNum] = useState(10)
     const [toggle, setToggle] = useState(false)
     const [coords, setCoords] = useState(0)
+    const [image, setImage] = useState([])
+    const [spinner, setSpinner] = useState(true)
+    const [social, setSocial] = useState({})
+    const {language} = useContext(LanguageContext)
 
     const params = useParams()
 
     const nav = useNavigate()
 
-    const settings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 3,
-        responsive: [
-            {
-                breakpoint: 1300,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 2,
-
-                }
-            },
-            {
-                breakpoint: 1080,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 2,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 840,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1
-                }
-            },
-            {
-                breakpoint: 590,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
 
     useEffect(() => {
-        axios(`https://api.themoviedb.org/3/movie/${params.id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
-            .then(({data}) => setInfo(data))
 
-        axios(`https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        const p1 = axios(`https://api.themoviedb.org/3/movie/${params.id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
+            .then(({data}) => {
+                setInfo(data)
+            })
+
+        const p2 = axios(`https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => it.job === `Director` || it.job === `Screenplay`))
             })
 
-        axios(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        const p3 = axios(`https://api.themoviedb.org/3/movie/${params.id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+            .then(({data}) => {
+                setImage(data.posters)
+            })
+
+        const p4 = axios(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => setVideos(data.results))
-    }, [params])
+
+            const  p5 = axios(`https://api.themoviedb.org/3/movie/${params.id}/external_ids?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+                .then(({data}) => {
+                    setSocial(data)
+                })
+
+        Promise.all([p1, p2, p3, p4, p5])
+            .catch(e => console.log(e))
+            .finally(() => setSpinner(false))
+
+
+    }, [params, language])
 
 
     const par = (key) => {
-        console.log(key)
         setVideosKey(key)
         setToggle(true)
     }
 
-    const goToInfo = (id, e) =>{
-        if(Math.abs(e.clientX - coords) < 5)
-        nav(`/actor/${id}`)
+    const goToInfo = (id, e) => {
+        if (Math.abs(e.clientX - coords) < 5)
+            nav(`/actor/${id}`)
 
     }
+
+
+    if (spinner) return <Spinner/>
 
     return (
         <div key={info.id} className="pad">
 
+            <MovieHero info={info} social={social} crew={crew}/>
 
-            <section style={{
-                background: `#473a41 url(https://image.tmdb.org/t/p/original${info.belongs_to_collection?.backdrop_path || info.backdrop_path}) center/cover`,
-                backgroundBlendMode: ` overlay `
-            }} className="card p-5">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-4">
-                            <img src={`https://image.tmdb.org/t/p/w400${info.poster_path}`} alt=""/>
-                        </div>
-                        <div className="col-8 text-light p-3">
-                            <h1 className="card-title text-light">{info.title}</h1>
-                            <div>( {info.release_date} )</div>
-                            <div className="d-flex mb-3 text-light ">
-                                &bull;
-                                &ensp;
-                                {info.genres?.map(it => <div className="text-light me-3">  {it.name}</div>)}
-                                &bull;
-                            </div>
-                            <div className="text-light mb-3"> Длительность {info.runtime} минут</div>
-                            <div className="d-flex align-items-center mb-5">
-                                <div className="rating me-2">
-                                    <CircularProgressbar
-                                        value={info.vote_average * 10}
-                                        text={`${info.vote_average * 10}%`}
-                                        styles={buildStyles({
-                                            textSize: '22px',
-                                            pathTransitionDuration: 2.5,
-                                            textColor: '#FFFFFF',
-                                            trailColor: '#FFFFFF',
-                                            backgroundColor: '#FFFFFF',
-                                            background: {
-                                                fill: '#FFFFFF',
-                                            },
-                                            pathColor: "#0fb6de"
-                                        })}
-                                    />
-                                </div>
-                                <div>Пользовательский счёт</div>
-                            </div>
+           <div className="container">
+               <div className="row">
+                   <div className="col-9">
+                       <ActorsSlider actors={actors} actorsNum={actorsNum} setCoords={setCoords} goToInfo={goToInfo}
+                                     setActorsNum={setActorsNum}/>
+                   </div>
 
-                            <p className="card-subtitle text-light">{info.overview}</p>
+                   <div className="col-3">
+                       <div className="d-flex align-items-center justify-content-around mt-3 mb-3">
+                           {social.instagram_id &&  <a className="links me-2" href={`https://www.instagram.com/${social.instagram_id}`}>
+                               <img className="w-75" src={insta} alt=""/>
+                           </a>}
 
-                            <div className="text d-flex">
-                                {
-                                    crew.map(it => {
-                                        return (
-                                            <div className="m-3">
-                                                <h4>{it.name}</h4>
-                                                <p>{it.job}</p>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <div className="card h-100 p-5">
+                           {social.facebook_id && <a className="links me-2" href={`https://www.facebook.com/${social.facebook_id}`}>
+                               <img className="w-75" src={face} alt=""/>
+                           </a>}
 
-                <Slider {...settings}>
+                           {social.twitter_id && <a className="links " href={`https://twitter.com/${social.twitter_id}`}>
+                               <img className="w-75" src={tweeter} alt=""/>
+                           </a>}
+                       </div>
+
+
+                       <p className="mb-1 fw-bold">Исходное название:</p>
+                       <div className="mb-2">{info.original_title}</div>
+
+                       <p className="mb-1 fw-bold">Статус:</p>
+                       <div className="mb-2">{info.status}</div>
+
+                       <p className="mb-1 fw-bold">Бюджет:</p>
+                       <div className="mb-2">{info.budget.toLocaleString()}$</div>
+
+                       <p className="mb-1 fw-bold">Сборы:</p>
+                       <div className="mb-2">{info.revenue.toLocaleString()}$</div>
+
+
+
+                   </div>
+               </div>
+           </div>
+
+
+            <div className="container">
+                <div className="d-flex p-4 flex-wrap align-items-center justify-content-around">
                     {
-                        actors?.slice(0, actorsNum)?.map(it => {
+                        videos.map((it, index) => {
                             return (
-                                <div key={it.id} className="h-100">
-                                    <div className="card h-100 p-3 m-2 d-flex flex-column justify-content-between  ">
-                                        <button onMouseDown={(e) => setCoords(e.clientX)} onClick={(e) => goToInfo(it.id, e)} className="text-decoration-none button-slider text-black" >
-                                            <img className="actor-img"
-                                                 src={it.profile_path ? `https://image.tmdb.org/t/p/w300${it.profile_path}` : anon}
-                                                 alt={it.name}/>
-                                            <h5> {it.name} </h5>
-                                        </button>
-                                    </div>
+                                <div className="col-sm-12 col-md-6 col-3 align-items-center">
+                                    <button className="border-0 p-2 w-50 bg-white" onClick={() => par(it.key)}>
+                                        <img className="w-100"
+                                             src={`https://image.tmdb.org/t/p/w300${image[index]
+                                                 .file_path}`} alt=""/>
+                                        {it.name}
+                                    </button>
                                 </div>
                             )
                         })
                     }
-                    {actorsNum < actors.length && <div className="d-flex align-items-center text-center">
-                        <button className="btn" onClick={() => setActorsNum(actorsNum + 10)}>Смотреть еще...</button>
-                    </div>}
-                </Slider>
-
+                </div>
             </div>
 
 
-            <ul>
-                {
-                    videos.map(it => {
-                        return (
-                            <li><button onClick={() => par(it.key)}>{it.name}</button></li>
-                        )
-                    })
-                }
-            </ul>
-
-
-            {toggle && <Triller setToggle={setToggle}  videoKey={videosKey} />}
+            {toggle && <Triller setToggle={setToggle} videoKey={videosKey}/>}
         </div>
 
     );

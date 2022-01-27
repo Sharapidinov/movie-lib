@@ -8,39 +8,37 @@ import ActorInfo from "./components/ActorInfo/ActorInfo";
 import Main from "./Pages/Main";
 import AllPeople from "./Pages/AllPeople";
 import Footer from "./components/Footer/Footer";
+import SerialsInfo from "./components/SerialsInfo/SerialsInfo";
+import AllSerials from "./Pages/AllSerials";
+import LanguageProvider from "./languageCotext/LanguageContext";
 
 
 const App = () => {
 
-    const [header, setHeader] = useState("header")
 
-
-    const scroll = e => {
-        if (e.deltaY > 0){
-            setHeader("header header-hidden")
-        } else {
-            setHeader("header header-show")
-        }
-    }
 
     return (
-        <div className="wraper " onWheel={scroll}>
-        <div className={header}><Header/></div>
-         <div className="flex-grow-1">
-             <Routes>
-                 <Route path="/" element={<Main/>}/>
-                 <Route path="/films" element={<AllFilms/>}/>
-                 <Route path="/people" element={<AllPeople/>}/>
-                 <Route path="/search/:name" element={<SearchMovie/>}/>
-                 <Route path="/info/:id" element={<MovieInfo/>}/>
-                 <Route path="/actor/:id" element={<ActorInfo/>}/>
-                 <Route path="*" element={<Navigate to="/"/>}/>
+        <LanguageProvider>
+            <div className="wraper ">
+                <Header/>
+                <div className="flex-grow-1">
+                    <Routes>
+                        <Route path="/" element={<Main/>}/>
+                        <Route path="/films" element={<AllFilms/>}/>
+                        <Route path="/people" element={<AllPeople/>}/>
+                        <Route path="/serials" element={<AllSerials/>}/>
+                        <Route path="/search/:name" element={<SearchMovie/>}/>
+                        <Route path="/info/:id" element={<MovieInfo/>}/>
+                        <Route path="/serial/:id" element={<SerialsInfo/>}/>
+                        <Route path="/actor/:id" element={<ActorInfo/>}/>
+                        <Route path="*" element={<Navigate to="/"/>}/>
 
-             </Routes>
-         </div>
+                    </Routes>
+                </div>
 
-            <Footer/>
-        </div>
+                <Footer/>
+            </div>
+        </LanguageProvider>
     );
 };
 

@@ -1,18 +1,24 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
 import PeopleCard from "../components/PeopleCard/PeopleCard";
+import Spinner from "../components/Spinner/Spinner";
+import Pagination from "../components/pagination/Pagination";
 
 const AllPeople = () => {
+    const [query, setQuery] = useSearchParams()
     const [people, setPeople] = useState([])
-
-    const [page, setPage] = useState(1)
+    const [spinner, setSpinner] = useState(true)
+    const [page, setPage] = useState(+query.get("page"))
     const [name, setName] = useState("")
     const nav = useNavigate()
 
     useEffect(() => {
         axios(`https://api.themoviedb.org/3/person/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru&page=${page}`)
-            .then(({data}) => setPeople(data.results) )
+            .then(({data}) => {
+                setPeople(data.results)
+                setSpinner(false)
+            } )
     },[page])
 
 
@@ -34,24 +40,13 @@ const AllPeople = () => {
     const onClick = () => {
         nav(`/search/${name}`)
     }
+    if (spinner) return <Spinner/>
 
     return (
         <div className="container pad">
 
-            <div className="d-flex justify-content-around align-items-center">
-                <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
-                <button onClick={onClick} className="btn btn-outline-secondary ">Найти</button>
-            </div>
 
-            <div className="btn-container">
-                {page > 1 && <button onClick={() => setPage(1)}  className='btn btn-primary'>{1}</button>}
-                {page > 4 && <span className="me-2">...</span>}
-                {page >= 3 && <button onClick={() => setPage(page - 1)}  className='btn btn-primary'>{page - 1}</button>}
-                <button onClick={() => setPage(page)}  className='btn btn-primary'>{page}</button>
-                {page < 99 && <button onClick={() => setPage(page + 1)}  className='btn btn-primary'>{page + 1}</button>}
-                {page <98 && <span className="me-2">...</span>}
-                {page < 100 && <button onClick={() => setPage(100)}  className='btn btn-primary'>{100}</button>}
-            </div>
+            <Pagination page={page} setQuery={setQuery} setPage={setPage}/>
 
             <div className="row pt-5">
                 {
