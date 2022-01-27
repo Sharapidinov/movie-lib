@@ -3,7 +3,6 @@ import axios from "axios";
 import {useState, useEffect} from "react";
 import Spinner from "../components/Spinner/Spinner";
 import Pagination from "../components/pagination/Pagination";
-import MovieCard from "../components/MovieCard/MovieCard";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import SerialCard from "../components/SerialCard/SerialCard";
 

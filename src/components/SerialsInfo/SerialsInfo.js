@@ -23,24 +23,22 @@ const SerialsInfo = () => {
     const {id} = useParams()
     useEffect(()=>{
        const job = ["Director", "Screenplay", "Original Music Composer", "Writer"]
-        const p1 = axios(`https://api.themoviedb.org/3/tv/${id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => setSerial(data))
 
-        const p2 = axios(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => job.includes(it.jobs[0].job)).splice(0, 5))
             })
 
-        const p3 = axios(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => setVideos(data.results))
 
-        const p4 = axios(`https://api.themoviedb.org/3/tv/${id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
             .then(({data}) => {
                 setImage(data.posters)
             })
-
-
 
     },[])
 

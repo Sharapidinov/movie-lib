@@ -25,21 +25,7 @@ const AllPeople = () => {
 
 
 
-    const Search = e => {
-        setName(e.target.value.trim())
 
-
-    }
-
-    const enter = (e) => {
-        if (e.key === "Enter") {
-            nav(`/search/${name}`)
-        }
-    }
-
-    const onClick = () => {
-        nav(`/search/${name}`)
-    }
     if (spinner) return <Spinner/>
 
     return (

@@ -1,9 +1,6 @@
 import React, {useEffect, useState,useContext} from 'react';
 import {useParams, useNavigate} from "react-router-dom";
-import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import axios from "axios";
-import anon from "../img/anon.jpeg"
-import Slider from "react-slick"
 import 'react-circular-progressbar/dist/styles.css';
 import Triller from "./Triller";
 import Spinner from "../Spinner/Spinner";

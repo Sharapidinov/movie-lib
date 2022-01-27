@@ -2,13 +2,11 @@ import React, {useContext} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import logo from "../img/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg"
 import {useState} from "react";
-import burger from "../img/burger-menu.svg"
 import {LanguageContext} from "../../languageCotext/LanguageContext";
 
 const Header = () => {
     const [name, setName] = useState("")
     const [dis, setDis] = useState(true)
-    const [burgerMenu, setBurgerMenu] = useState(false)
     const nav = useNavigate()
 
     const {language, setLanguage} = useContext(LanguageContext)
@@ -58,8 +56,6 @@ const Header = () => {
                     <button className="btn btn-outline-secondary " onClick={changeLanguage}>{language.slice(-2)}</button>
                 </div>
 
-                {/*<button onClick={() => setBurgerMenu(true)} className="btn-burger border-0"><img*/}
-                {/*    className="burger-menu-img" src={burger} alt=""/></button>*/}
             </div>
         </header>
 
