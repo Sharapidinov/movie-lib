@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
-import MovieHero from "../../Pages/MovieHero";
-import ActorsSlider from "../../Pages/ActorsSlider";
-import Triller from "../MovieInfo/Triller";
+import MovieHero from "../MovieHero.js";
+import ActorsSlider from "../ActorsSlider.js";
+import Triller from "../MovieInfo/Triller.js";
 
 const SerialsInfo = () => {
 
@@ -40,7 +40,7 @@ const SerialsInfo = () => {
                 setImage(data.posters)
             })
 
-    },[])
+    },[id])
 
     const goToInfo = (id, e) => {
         if (Math.abs(e.clientX - coords) < 5)

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
-import Img from "../components/MovieInfo/Img";
+import Img from "./MovieInfo/Img";
 
 
 const MovieHero = ({info, crew}) => {

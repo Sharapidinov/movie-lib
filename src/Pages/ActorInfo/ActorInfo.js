@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import axios from "axios";
-import anon from "../img/anon.jpeg";
-import Spinner from "../Spinner/Spinner";
-import Img from "../MovieInfo/Img";
-import insta from "../img/insta.png";
-import face from "../img/face.png";
-import tweeter from "../img/tweeter.png";
+import anon from "../../components/img/anon.jpeg";
+import Spinner from "../../components/Spinner/Spinner.js";
+import Img from "../MovieInfo/Img.js";
+import insta from "../../components/img/insta.png";
+import face from "../../components/img/face.png";
+import tweeter from "../../components/img/tweeter.png";
 
 const ActorInfo = () => {
     const params = useParams()
@@ -106,10 +106,10 @@ const ActorInfo = () => {
                            {
                                films?.slice(0, actorsNum)?.map(it => {
                                    return (
-                                       <div className="h-25 w-50 p-2">
-                                           <div className="card h-100 w-100 p-3 m-2 d-flex flex-column justify-content-between   ">
-                                               <Link className="w-75 h-75 text-decoration-none text-black" to={`/info/${it.id}`}>
-                                                   <img className=""
+                                       <div className="h-25 p-2">
+                                           <div className="card h-100 p-3 m-2 d-flex flex-column justify-content-between">
+                                               <Link className=" h-100 text-decoration-none text-black" to={`/info/${it.id}`}>
+                                                   <img className="actor-img"
                                                         src={it.poster_path ? `https://image.tmdb.org/t/p/w300${it.poster_path}` : anon}
                                                         alt={it.title}/>
                                                    <h5> {it.title} </h5>

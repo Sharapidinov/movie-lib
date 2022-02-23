@@ -2,14 +2,14 @@ import React, {useEffect, useState,useContext} from 'react';
 import {useParams, useNavigate} from "react-router-dom";
 import axios from "axios";
 import 'react-circular-progressbar/dist/styles.css';
-import Triller from "./Triller";
-import Spinner from "../Spinner/Spinner";
-import MovieHero from "../../Pages/MovieHero";
-import ActorsSlider from "../../Pages/ActorsSlider";
-import insta from "../img/insta.png";
-import face from "../img/face.png";
-import tweeter from "../img/tweeter.png";
-import {LanguageContext} from "../../languageCotext/LanguageContext";
+import Triller from "./Triller.js";
+import Spinner from "../../components/Spinner/Spinner.js";
+import MovieHero from "../MovieHero.js";
+import ActorsSlider from "../ActorsSlider.js";
+import insta from "../../components/img/insta.png";
+import face from "../../components/img/face.png";
+import tweeter from "../../components/img/tweeter.png";
+import {LanguageContext} from "../../languageCotext/LanguageContext.js";
 
 
 const MovieInfo = () => {

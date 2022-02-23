@@ -2,13 +2,13 @@ import React from 'react';
 import AllFilms from "./Pages/AllFilms";
 import {Route, Routes, Navigate} from "react-router-dom"
 import SearchMovie from "./components/Header/SearchMovie";
-import MovieInfo from "./components/MovieInfo/MovieInfo";
+import MovieInfo from "./Pages/MovieInfo/MovieInfo";
 import Header from "./components/Header/Header";
-import ActorInfo from "./components/ActorInfo/ActorInfo";
+import ActorInfo from "./Pages/ActorInfo/ActorInfo";
 import Main from "./Pages/Main";
 import AllPeople from "./Pages/AllPeople";
 import Footer from "./components/Footer/Footer";
-import SerialsInfo from "./components/SerialsInfo/SerialsInfo";
+import SerialsInfo from "./Pages/SerialsInfo/SerialsInfo";
 import AllSerials from "./Pages/AllSerials";
 import LanguageProvider from "./languageCotext/LanguageContext";
 
