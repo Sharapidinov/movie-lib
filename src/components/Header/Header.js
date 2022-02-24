@@ -43,16 +43,16 @@ const Header = () => {
             <div className="container d-flex align-items-center text-center justify-content-between p-3 ">
                 <div className="d-flex justify-content-around align-items-center">
                     <div><Link to="/"><img className="w-75" src={logo} alt=""/></Link></div>
-                        <Link className="text-decoration-none text-light fs-5 me-3" to="/films?page=1">Фильмы</Link>
-                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/people?page=1">Актеры</Link>
-                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/serials?page=1">Сериалы</Link>
+                        <Link className="text-decoration-none text-light fs-5 me-3" to="/films?page=1">{(language === "ru-RU") ? "Фильмы" : "Films"}</Link>
+                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/people?page=1">{(language === "ru-RU") ?"Актеры" :"Actors"}</Link>
+                        <Link className="text-decoration-none text-light fs-5 me-3 " to="/serials?page=1">{(language === "ru-RU") ?"Сериалы": "TV series"}</Link>
 
 
                 </div>
                 <div className="d-flex justify-content-around align-items-center d-none d-md-flex">
-                    <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter}
+                    <input className="form-control search-input" placeholder={(language === "ru-RU") ?"Введите название" : "Enter the title"} onKeyDown={enter}
                            onChange={Search} type="text"/>
-                    <button onClick={onClick} disabled={dis} className="btn btn-outline-secondary me-3">Найти</button>
+                    <button onClick={onClick} disabled={dis} className="btn btn-outline-secondary me-3">{(language === "ru-RU") ?"Найти" :"Find"}</button>
                     <button className="btn btn-outline-secondary " onClick={changeLanguage}>{language.slice(-2)}</button>
                 </div>
 

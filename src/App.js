@@ -13,6 +13,7 @@ import AllSerials from "./Pages/AllSerials";
 import LanguageProvider from "./languageCotext/LanguageContext";
 
 
+
 const App = () => {
 
 

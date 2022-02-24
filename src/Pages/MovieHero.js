@@ -3,7 +3,7 @@ import {buildStyles, CircularProgressbar} from "react-circular-progressbar";
 import Img from "./MovieInfo/Img";
 
 
-const MovieHero = ({info, crew}) => {
+const MovieHero = ({info, crew, language}) => {
 
 
     const [open, setOpen] = useState(true)
@@ -18,7 +18,7 @@ const MovieHero = ({info, crew}) => {
                     <div className="col-xl-4 col-sm-6">
                         <div onClick={() => setOpen(false)} className="position-relative">
                             <img className="w-100 poster" src={`https://image.tmdb.org/t/p/w400${info.poster_path}`} alt=""/>
-                            <span className="text-on-image">Увеличить</span>
+                            <span className="text-on-image">{(language === "ru-RU") ?"Увеличить" : "Increase"}</span>
                         </div>
                     </div>
                     <div className="col-8 text-light p-3">
@@ -30,7 +30,11 @@ const MovieHero = ({info, crew}) => {
                             {info.genres?.map(it => <div className="text-light me-3">  {it.name}</div>)}
                             &bull;
                         </div>
-                        <div className="text-light mb-3"> Длительность {info.runtime || info.episode_run_time} минут</div>
+                        <div className="text-light mb-3"> {
+                            (language === "ru-RU")
+                            ? `Длительность ${info.runtime || info.episode_run_time} минут`
+                            : `Duration ${info.runtime || info.episode_run_time} minutes`}
+                        </div>
                         <div className="d-flex align-items-center mb-5">
                             <div className="rating me-2">
                                 <CircularProgressbar
@@ -49,7 +53,7 @@ const MovieHero = ({info, crew}) => {
                                     })}
                                 />
                             </div>
-                            <div>Пользовательский счёт</div>
+                            <div>{(language === "ru-RU")?"Пользовательский счёт": "Votes average"}</div>
                         </div>
                         
 

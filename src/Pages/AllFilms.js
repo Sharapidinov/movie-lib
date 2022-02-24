@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import MovieCard from "../components/MovieCard/MovieCard";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import Spinner from "../components/Spinner/Spinner";
 import Pagination from "../components/pagination/Pagination";
+import {LanguageContext} from "../languageCotext/LanguageContext.js";
 
 function AllFilms() {
     const [query, setQuery] = useSearchParams()
@@ -11,16 +12,18 @@ function AllFilms() {
     const [page, setPage] = useState(+query.get("page"))
     const [name, setName] = useState("")
     const [spinner, setSpinner] = useState(true)
+    const {language} = useContext(LanguageContext)
+
     const nav = useNavigate()
 
 
     useEffect(() => {
-        axios(`https://api.themoviedb.org/3/discover/movie?api_key=073e2098c1a48c1fee6edef88aedd5b7&page=${page}&language=ru`)
+        axios(`https://api.themoviedb.org/3/discover/movie?api_key=073e2098c1a48c1fee6edef88aedd5b7&page=${page}&language=${language}`)
             .then(({data}) => {
                 setMovie(data.results)
                 setSpinner(false)
             })
-    }, [page])
+    }, [page, language])
 
 
     const Search = e => {
@@ -51,9 +54,9 @@ function AllFilms() {
         <div className="container container-sm container-md container-lg container-xl pad">
 
             <div className="mt-3 d-flex justify-content-around align-items-center">
-                <input className="form-control search-input" placeholder="Введите название фильма или сериала" onKeyDown={enter}
+                <input className="form-control search-input" placeholder={(language === "ru-RU")?"Введите название фильма или сериала" :"Enter the name of the movie or series"} onKeyDown={enter}
                        onChange={Search} type="text"/>
-                <button onClick={onClick} className="btn btn-outline-secondary ">Найти</button>
+                <button onClick={onClick} className="btn btn-outline-secondary ">{(language === "ru-RU")?"Найти":"Find"}</button>
             </div>
 
            <Pagination page={page} setQuery={setQuery} setPage={setPage}/>
@@ -63,7 +66,7 @@ function AllFilms() {
                     movie.map(it => {
                         return (
 
-                            <MovieCard key={it.id} it={it}/>
+                            <MovieCard language={language} key={it.id} it={it}/>
 
                         )
                     })

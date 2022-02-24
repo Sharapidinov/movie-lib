@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import anon from "../components/img/anon.jpeg";
 import axios from "axios";
 import Slider from "react-slick"
+import {LanguageContext} from "../languageCotext/LanguageContext.js";
 
 const Main = () => {
 
@@ -13,6 +14,7 @@ const Main = () => {
     const [serials,setSerials] = useState([])
     const [dis, setDis] = useState(true)
     const [coords, setCoords] = useState(0)
+    const {language} = useContext(LanguageContext)
 
     const settings = {
         dots: false,
@@ -55,11 +57,11 @@ const Main = () => {
     };
 
     useEffect(() => {
-        axios(`https://api.themoviedb.org/3/movie/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/movie/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => setFilms(data.results))
-        axios(`https://api.themoviedb.org/3/tv/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/popular?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => setSerials(data.results))
-    },[])
+    },[language])
 
 
     const Search = e => {
@@ -96,16 +98,20 @@ const Main = () => {
     return (
         <div className="container pad pb-4">
             <div className="mt-3 h-75 bg-primary p-5 mb-5">
-                <div className="text text-light fw-bold fs-2">Добро пожаловать</div>
-                <div className="text text-light fw-bold fs-2 mb-5">Миллионы фильмов, сериалов и людей. Исследуйте сейчас.
+                <div className="text text-light fw-bold fs-2">{(language === "ru-RU")? "Добро пожаловать": "Welcome"}</div>
+                <div className="text text-light fw-bold fs-2 mb-5">{(language === "ru-RU")
+                    ?"Миллионы фильмов, сериалов и людей. Исследуйте сейчас."
+                    : "Millions of movies, series and people. Explore now."
+
+                }
                 </div>
                 <div className="d-flex justify-content-around align-items-center">
-                    <input className="form-control search-input" placeholder="Введите название" onKeyDown={enter} onChange={Search} type="text"/>
-                    <button onClick={onClick}  disabled={dis} className="btn btn-outline-secondary bg-light ">Найти</button>
+                    <input className="form-control search-input" placeholder={(language === "ru-RU") ?"Введите название" : "Enter the title"} onKeyDown={enter} onChange={Search} type="text"/>
+                    <button onClick={onClick}  disabled={dis} className="btn btn-outline-secondary bg-light ">{(language === "ru-RU")? "Найти" : "Find"}</button>
                 </div>
             </div>
 
-            <p className=" text fw-bold fs-2 mb-3">Что популярно в кинотеатрах:</p>
+            <p className=" text fw-bold fs-2 mb-3">{(language === "ru-RU")?"Что популярно в кинотеатрах:" : "What is popular in cinemas:"}</p>
 
                 <Slider {...settings}>
                     {
@@ -128,7 +134,7 @@ const Main = () => {
                 </Slider>
 
 
-            <p className=" text fw-bold fs-2 mb-3">Популярные сериалы:</p>
+            <p className=" text fw-bold fs-2 mb-3">{(language === "ru-RU") ? "Популярные сериалы:" : "Popular TV shows:"}</p>
 
             <Slider {...settings}>
                 {

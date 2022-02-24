@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import MovieHero from "../MovieHero.js";
 import ActorsSlider from "../ActorsSlider.js";
 import Triller from "../MovieInfo/Triller.js";
+import {LanguageContext} from "../../languageCotext/LanguageContext.js";
 
 const SerialsInfo = () => {
 
@@ -16,6 +17,7 @@ const SerialsInfo = () => {
     const [coords, setCoords] = useState(0)
     const [toggle, setToggle] = useState(false)
     const [image, setImage] = useState([])
+    const {language} = useContext(LanguageContext)
 
 
     const nav = useNavigate()
@@ -23,24 +25,24 @@ const SerialsInfo = () => {
     const {id} = useParams()
     useEffect(()=>{
        const job = ["Director", "Screenplay", "Original Music Composer", "Writer"]
-        axios(`https://api.themoviedb.org/3/tv/${id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => setSerial(data))
 
-        axios(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => job.includes(it.jobs[0].job)).splice(0, 5))
             })
 
-        axios(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => setVideos(data.results))
 
-        axios(`https://api.themoviedb.org/3/tv/${id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        axios(`https://api.themoviedb.org/3/tv/${id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => {
                 setImage(data.posters)
             })
 
-    },[id])
+    },[id, language])
 
     const goToInfo = (id, e) => {
         if (Math.abs(e.clientX - coords) < 5)
@@ -55,7 +57,7 @@ const SerialsInfo = () => {
     }
     return (
         <div key={serial.id} className="pad">
-            <MovieHero info={serial} crew={crew}/>
+            <MovieHero language={language} info={serial} crew={crew}/>
             <ActorsSlider actors={actors} actorsNum={actorsNum} setCoords={setCoords} goToInfo={goToInfo}
                           setActorsNum={setActorsNum}/>
 

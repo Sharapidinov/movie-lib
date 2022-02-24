@@ -39,21 +39,21 @@ const MovieInfo = () => {
                 setInfo(data)
             })
 
-        const p2 = axios(`https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        const p2 = axios(`https://api.themoviedb.org/3/movie/${params.id}/credits?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => {
                 setActors(data.cast)
                 setCrew(data.crew.filter(it => it.job === `Director` || it.job === `Screenplay`))
             })
 
-        const p3 = axios(`https://api.themoviedb.org/3/movie/${params.id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        const p3 = axios(`https://api.themoviedb.org/3/movie/${params.id}/images?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => {
                 setImage(data.posters)
             })
 
-        const p4 = axios(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+        const p4 = axios(`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
             .then(({data}) => setVideos(data.results))
 
-            const  p5 = axios(`https://api.themoviedb.org/3/movie/${params.id}/external_ids?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=ru`)
+            const  p5 = axios(`https://api.themoviedb.org/3/movie/${params.id}/external_ids?api_key=073e2098c1a48c1fee6edef88aedd5b7&language=${language}`)
                 .then(({data}) => {
                     setSocial(data)
                 })
@@ -83,7 +83,7 @@ const MovieInfo = () => {
     return (
         <div key={info.id} className="pad">
 
-            <MovieHero info={info} social={social} crew={crew}/>
+            <MovieHero info={info} social={social} crew={crew} language={language}/>
 
            <div className="container">
                <div className="row">
@@ -108,16 +108,16 @@ const MovieInfo = () => {
                        </div>
 
 
-                       <p className="mb-1 fw-bold">Исходное название:</p>
+                       <p className="mb-1 fw-bold">{(language === "ru-RU")?"Исходное название:": "Original title:"}</p>
                        <div className="mb-2">{info.original_title}</div>
 
-                       <p className="mb-1 fw-bold">Статус:</p>
+                       <p className="mb-1 fw-bold">{(language === "ru-RU")?"Статус:": "Status:"}</p>
                        <div className="mb-2">{info.status}</div>
 
-                       <p className="mb-1 fw-bold">Бюджет:</p>
+                       <p className="mb-1 fw-bold">{(language === "ru-RU")?"Бюджет:":"Budget"}</p>
                        <div className="mb-2">{info.budget.toLocaleString()}$</div>
 
-                       <p className="mb-1 fw-bold">Сборы:</p>
+                       <p className="mb-1 fw-bold">{(language === "ru-RU")?"Сборы:" : "Revenue:"}</p>
                        <div className="mb-2">{info.revenue.toLocaleString()}$</div>
 
 
@@ -135,8 +135,7 @@ const MovieInfo = () => {
                                 <div className="col-sm-12 col-md-6 col-3 align-items-center">
                                     <button className="border-0 p-2 w-50 bg-white" onClick={() => par(it.key)}>
                                         <img className="w-100"
-                                             src={`https://image.tmdb.org/t/p/w300${image[index]
-                                                 .file_path}`} alt=""/>
+                                             src={`https://image.tmdb.org/t/p/w300${image[index]?.file_path}`} alt=""/>
                                         {it.name}
                                     </button>
                                 </div>

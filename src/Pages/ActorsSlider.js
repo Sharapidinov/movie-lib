@@ -60,7 +60,7 @@ const ActorsSlider = ({actors,actorsNum,setCoords,goToInfo,setActorsNum}) => {
                     actors?.slice(0, actorsNum)?.map(it => {
                         return (
                             <div key={it.id} className="">
-                                <div className="card  p-3 m-2 d-flex flex-column justify-content-between  ">
+                                <div className="card align-items-center  p-3 m-2 d-flex flex-column justify-content-between  ">
                                     <button onMouseDown={(e) => setCoords(e.clientX)}
                                             onClick={(e) => goToInfo(it.id, e)}
                                             className="text-decoration-none button-slider text-black">

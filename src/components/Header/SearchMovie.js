@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import MovieCard from "../MovieCard/MovieCard";
+import {LanguageContext} from "../../languageCotext/LanguageContext.js";
 
 const SearchMovie = () => {
     const [search, setSearch] = useState([])
-
+    const {language} = useContext(LanguageContext)
     const {name} = useParams()
 
     const nav = useNavigate()
@@ -22,7 +23,7 @@ const SearchMovie = () => {
     return (
         <div className="container pad">
 
-            <button className="btn mt-3 btn-outline-secondary" onClick={() => nav(`/`)}> На главную </button>
+            <button className="btn mt-3 btn-outline-secondary" onClick={() => nav(`/`)}> {(language === "ru-RU")?"На главную" : "To the main"} </button>
 
             <div className="row pt-5">
 
@@ -30,7 +31,7 @@ const SearchMovie = () => {
                     (search.length !== 0)?
                     search?.map( it => {
                         return <MovieCard key={it.id} it={it}/>
-                    }): "Ненайдено"
+                    }): (language === "ru-RU")?"Ненайдено" : "Not found"
 
                 }
 
